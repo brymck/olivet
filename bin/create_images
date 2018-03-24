@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+echo 'Converting assets/horns.svg to other images...'
+
+if ! [ -x "`command -v convert`" ]; then
+    echo 'ImageMagick is not installed! If you need to run this script, follow the installation instructions here:'
+    echo 'https://www.imagemagick.org/script/download.php'
+    exit 1
+fi
+
+echo 'Creating favicon in client/public/favicon.ico...'
+tmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'temp'`
+convert -resize 16x16   -background transparent ./assets/horns.svg $tmpdir/favicon-16.png
+convert -resize 32x32   -background transparent ./assets/horns.svg $tmpdir/favicon-32.png
+convert -resize 64x64   -background transparent ./assets/horns.svg $tmpdir/favicon-64.png
+convert -resize 128x128 -background transparent ./assets/horns.svg $tmpdir/favicon-128.png
+convert -resize 256x256 -background transparent ./assets/horns.svg $tmpdir/favicon-256.png
+
+convert $tmpdir/favicon-16.png $tmpdir/favicon-32.png $tmpdir/favicon-64.png $tmpdir/favicon-128.png $tmpdir/favicon-256.png -colors 256 ./client/public/favicon.ico
+
+rm -rf $tmpdir
+
+echo 'Completed successfully!'
