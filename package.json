@@ -1,0 +1,21 @@
+{
+  "name": "olivet",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1"
+  },
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brymck/olivet.git"
+  },
+  "keywords": ["node", "express"]
+}
