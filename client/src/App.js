@@ -3,7 +3,7 @@ import './App.css';
 
 // Ace
 import AceEditor from 'react-ace';
-// import 'brace/ext/language_tools';
+import 'brace/ext/language_tools';
 import 'brace/keybinding/emacs';
 import 'brace/keybinding/vim';
 import 'brace/mode/javascript';
@@ -56,6 +56,7 @@ const objectToOptions = (obj) => {
 
 class App extends Component {
   state = {
+    enableLiveAutocompletion: false,
     keyboardHandler: defaultKeyboardHandler,
     language: defaultLanguage,
     theme: defaultTheme,
@@ -73,13 +74,14 @@ class App extends Component {
     const columns = Object.keys(data[0]).map(x => ({ Header: x, accessor: x }));
 
     const {
+      enableLiveAutocompletion,
       keyboardHandler,
       language,
       theme,
     } = this.state;
 
     return (
-      <div className="App">
+      <div className="App container">
         <Tabs>
           <TabList>
             <Tab>Table</Tab>
@@ -94,34 +96,55 @@ class App extends Component {
           <TabPanel>
             <div className="row">
               <div className="col-sm-4">
-                <label>Language</label>
-                <Select
-                  name="language"
-                  value={language}
-                  onChange={this.setStateFromInput('language')}
-                  options={objectToOptions(languages)}
-                />
-                <label>Keybinding</label>
-                <Select
-                  name="keyboardHandler"
-                  value={keyboardHandler}
-                  onChange={this.setStateFromInput('keyboardHandler')}
-                  options={objectToOptions(keyboardHandlers)}
-                />
-                <label>Theme</label>
-                <Select
-                  name="theme"
-                  value={theme}
-                  onChange={this.setStateFromInput('theme')}
-                  options={objectToOptions(themes)}
-                />
+                <form>
+                  <div class="form-group">
+                    <label>Language</label>
+                    <Select
+                      name="language"
+                      value={language}
+                      onChange={this.setStateFromInput('language')}
+                      options={objectToOptions(languages)}
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Keybinding</label>
+                    <Select
+                      name="keyboardHandler"
+                      value={keyboardHandler}
+                      onChange={this.setStateFromInput('keyboardHandler')}
+                      options={objectToOptions(keyboardHandlers)}
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Theme</label>
+                    <Select
+                      name="theme"
+                      value={theme}
+                      onChange={this.setStateFromInput('theme')}
+                      options={objectToOptions(themes)}
+                    />
+                  </div>
+                  <div className="form-check">
+                    <input
+                      id="enableLiveAutocompletion"
+                      name="enableLiveAutocompletion"
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={enableLiveAutocompletion}
+                      onChange={e => this.setState({ enableLiveAutocompletion: e.target.checked })}
+                    />
+                    <label className="form-check-label" htmlFor="enableLiveAutocompletion">
+                      Enable live autocompletion
+                    </label>
+                  </div>
+                </form>
               </div>
               <div className="col-sm-8">
                 <AceEditor
-                  // enableLiveAutocompletion
+                  enableLiveAutocompletion={enableLiveAutocompletion}
                   keyboardHandler={keyboardHandler}
                   mode={language}
-                  theme="github"
+                  theme={theme}
                   width="100%"
                 />
               </div>
