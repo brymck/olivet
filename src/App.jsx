@@ -82,9 +82,7 @@ class App extends Component {
   }
 
   setStateFromInput(label) {
-    return function(input) {
-      this.setState({ [label]: input.value })
-    };
+    return (input) => this.setState({ [label]: input.value });
   }
 
   render() {
