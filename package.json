@@ -3,19 +3,33 @@
   "version": "0.1.0",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3"
+    "bootstrap": "^4.0.0",
+    "brace": "^0.11.1",
+    "express": "^4.16.3",
+    "react": "^16.2.0",
+    "react-ace": "^5.9.0",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1",
+    "react-select": "^1.2.1",
+    "react-table": "^6.8.0",
+    "react-tabs": "^2.2.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.1"
   },
   "scripts": {
-    "client": "cd client && yarn start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn start\"",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/brymck/olivet.git"
   },
-  "keywords": ["node", "express"]
+  "keywords": ["node", "express"],
+  "proxy": "http://localhost:5000"
 }
