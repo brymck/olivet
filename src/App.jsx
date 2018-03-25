@@ -55,12 +55,15 @@ const objectToOptions = (obj) => {
 };
 
 class App extends Component {
-  state = {
-    data: [{ name: 'bryan' }],
-    enableLiveAutocompletion: false,
-    keyboardHandler: defaultKeyboardHandler,
-    language: defaultLanguage,
-    theme: defaultTheme,
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [{ name: 'bryan' }],
+      enableLiveAutocompletion: false,
+      keyboardHandler: defaultKeyboardHandler,
+      language: defaultLanguage,
+      theme: defaultTheme,
+    }
   }
 
   componentDidMount() {
@@ -69,7 +72,7 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  callApi = async () => {
+  async callApi() {
     const response = await fetch('/sources/gdp_per_capita');
     const body = await response.json();
 
@@ -78,8 +81,10 @@ class App extends Component {
     return body;
   }
 
-  setStateFromInput = (label) => (input) => {
-    this.setState({ [label]: input.value })
+  setStateFromInput(label) {
+    return function(input) {
+      this.setState({ [label]: input.value })
+    };
   }
 
   render() {

@@ -5,7 +5,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.get('/sources/:name', (req, res) => {
-    sources[req.params.name].load(res);
-})
+  sources[req.params.name].load(res);
+});
 
+// eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Listening on port ${port}`));

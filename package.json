@@ -6,19 +6,27 @@
     "brace": "^0.11.1",
     "csvtojson": "^1.1.9",
     "express": "^4.16.3",
+    "glob": "^7.1.2",
     "react": "^16.2.0",
     "react-ace": "^5.9.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
     "react-select": "^1.2.1",
     "react-table": "^6.8.0",
-    "react-tabs": "^2.2.1"
+    "react-tabs": "^2.2.1",
+    "request": "^2.85.0"
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
     "nodemon": "^1.17.2"
   },
   "scripts": {
+    "lint": "eslint . --ext .js --ext .js2",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn start\"",
     "start": "react-scripts start",
