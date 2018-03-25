@@ -56,10 +56,26 @@ const objectToOptions = (obj) => {
 
 class App extends Component {
   state = {
+    data: [{ name: 'bryan' }],
     enableLiveAutocompletion: false,
     keyboardHandler: defaultKeyboardHandler,
     language: defaultLanguage,
     theme: defaultTheme,
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({ data: res }))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/sources/gdp_per_capita');
+    const body = await response.json();
+
+    if (response.status !== 200) throw Error(body.message);
+
+    return body;
   }
 
   setStateFromInput = (label) => (input) => {
@@ -67,18 +83,15 @@ class App extends Component {
   }
 
   render() {
-    const data = [{
-      name: 'brymck',
-    }];
-
-    const columns = Object.keys(data[0]).map(x => ({ Header: x, accessor: x }));
-
     const {
+      data,
       enableLiveAutocompletion,
       keyboardHandler,
       language,
       theme,
     } = this.state;
+
+    const columns = Object.keys(data[0]).map(x => ({ Header: x, accessor: x }));
 
     return (
       <div className="App container">
@@ -97,7 +110,7 @@ class App extends Component {
             <div className="row">
               <div className="col-sm-4">
                 <form>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label>Language</label>
                     <Select
                       name="language"
@@ -106,7 +119,7 @@ class App extends Component {
                       options={objectToOptions(languages)}
                     />
                   </div>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label>Keybinding</label>
                     <Select
                       name="keyboardHandler"
@@ -115,7 +128,7 @@ class App extends Component {
                       options={objectToOptions(keyboardHandlers)}
                     />
                   </div>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label>Theme</label>
                     <Select
                       name="theme"
