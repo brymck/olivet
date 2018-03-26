@@ -16,14 +16,16 @@ import Chart from './components/Chart';
 import Editor from './components/Editor';
 
 const keyMap = {
-  goToTable: 'g T',
-  goToEditor: 'g E',
+  goToChart: 'G C',
+  goToEditor: 'G E',
+  goToTable: 'G T',
 };
 
 function getHandlers(self) {
   return {
     goToTable: () => self.setState({ tabIndex: 0 }),
-    goToEditor: () => self.setState({ tabIndex: 1 }),
+    goToChart: () => self.setState({ tabIndex: 1 }),
+    goToEditor: () => self.setState({ tabIndex: 2 }),
   };
 }
 
