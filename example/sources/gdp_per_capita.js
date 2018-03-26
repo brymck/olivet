@@ -5,7 +5,14 @@ const url = 'https://gist.githubusercontent.com/chriddyp/5d1ea79569ed194d432e561
 
 exports.load = (res) => {
   const json = [];
-  csv()
+  csv({
+    colParser: {
+      population: 'number',
+      'life expectancy': 'number',
+      'gdp per capita': 'number',
+    },
+    checkType: true,
+  })
     .fromStream(request.get(url))
     .on('json', row => json.push(row))
     .on('done', () => {
