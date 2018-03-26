@@ -49,10 +49,12 @@ const defaultLanguage = 'python';
 const defaultKeyboardHandler = null;
 const defaultTheme = 'github';
 
-const objectToOptions = obj => Object.keys(obj).sort().map(k => ({
-  label: k,
-  value: obj[k],
-}));
+function objectToOptions(obj) {
+  return Object.keys(obj).sort().map(k => ({
+    label: k,
+    value: obj[k],
+  }));
+}
 
 class App extends Component {
   static async callApi() {
