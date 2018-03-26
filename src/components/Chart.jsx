@@ -9,6 +9,7 @@ import 'react-select/dist/react-select.css';
 // Recharts
 import {
   CartesianGrid,
+  ResponsiveContainer,
   Scatter,
   ScatterChart,
   Tooltip,
@@ -60,20 +61,20 @@ export default class Chart extends Component {
             />
           </div>
         </form>
-        <ScatterChart
-          data={data}
-          width={400}
-          height={400}
-          margin={{
-            top: 5, right: 20, left: 10, bottom: 5,
-          }}
-        >
-          <XAxis dataKey={xaxis} type="number" name={xaxis} />
-          <YAxis dataKey={yaxis} type="number" name={yaxis} />
-          <Tooltip />
-          <CartesianGrid />
-          <Scatter name="blah" fill="#cccccc" />
-        </ScatterChart>
+        <ResponsiveContainer height={600} width="100%">
+          <ScatterChart
+            data={data}
+            margin={{
+              top: 5, right: 20, left: 10, bottom: 5,
+            }}
+          >
+            <XAxis dataKey={xaxis} type="number" name={xaxis} />
+            <YAxis dataKey={yaxis} type="number" name={yaxis} />
+            <Tooltip />
+            <CartesianGrid />
+            <Scatter name="blah" fill="#cccccc" />
+          </ScatterChart>
+        </ResponsiveContainer>
       </div>
     );
   }
