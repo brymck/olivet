@@ -13,6 +13,9 @@ import 'brace/theme/monokai';
 import 'brace/theme/solarized_dark';
 import 'brace/theme/solarized_light';
 
+// react-hotkeys
+import { HotKeys } from 'react-hotkeys';
+
 // react-select
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -49,6 +52,18 @@ const defaultLanguage = 'python';
 const defaultKeyboardHandler = null;
 const defaultTheme = 'github';
 
+const keyMap = {
+  goToTable: 'g T',
+  goToEditor: 'g E',
+};
+
+function getHandlers(self) {
+  return {
+    goToTable: () => self.setState({ tabIndex: 0 }),
+    goToEditor: () => self.setState({ tabIndex: 1 }),
+  };
+}
+
 function objectToOptions(obj) {
   return Object.keys(obj).sort().map(k => ({
     label: k,
@@ -73,6 +88,7 @@ class App extends Component {
       enableLiveAutocompletion: false,
       keyboardHandler: defaultKeyboardHandler,
       language: defaultLanguage,
+      tabIndex: 0,
       theme: defaultTheme,
     };
   }
@@ -93,83 +109,88 @@ class App extends Component {
       enableLiveAutocompletion,
       keyboardHandler,
       language,
+      tabIndex,
       theme,
     } = this.state;
 
     const columns = Object.keys(data[0]).map(x => ({ Header: x, accessor: x }));
 
     return (
-      <div className="App container">
-        <Tabs>
-          <TabList>
-            <Tab>Table</Tab>
-            <Tab>Editor</Tab>
-          </TabList>
-          <TabPanel>
-            <ReactTable
-              data={data}
-              columns={columns}
-            />
-          </TabPanel>
-          <TabPanel>
-            <div className="row">
-              <div className="col-sm-4">
-                <form>
-                  <div className="form-group">
-                    <label>Language</label>
-                    <Select
-                      name="language"
-                      value={language}
-                      onChange={this.setStateFromInput('language')}
-                      options={objectToOptions(languages)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Keybinding</label>
-                    <Select
-                      name="keyboardHandler"
-                      value={keyboardHandler}
-                      onChange={this.setStateFromInput('keyboardHandler')}
-                      options={objectToOptions(keyboardHandlers)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Theme</label>
-                    <Select
-                      name="theme"
-                      value={theme}
-                      onChange={this.setStateFromInput('theme')}
-                      options={objectToOptions(themes)}
-                    />
-                  </div>
-                  <div className="form-check">
-                    <input
-                      id="enableLiveAutocompletion"
-                      name="enableLiveAutocompletion"
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={enableLiveAutocompletion}
-                      onChange={e => this.setState({ enableLiveAutocompletion: e.target.checked })}
-                    />
-                    <label className="form-check-label" htmlFor="enableLiveAutocompletion">
-                      Enable live autocompletion
-                    </label>
-                  </div>
-                </form>
+      <HotKeys keyMap={keyMap} handlers={getHandlers(this)} attach={window} focused>
+        <div className="App container">
+          <Tabs selectedIndex={tabIndex} onSelect={i => this.setState({ tabIndex: i })}>
+            <TabList>
+              <Tab>Table</Tab>
+              <Tab>Editor</Tab>
+            </TabList>
+            <TabPanel>
+              <ReactTable
+                data={data}
+                columns={columns}
+              />
+            </TabPanel>
+            <TabPanel>
+              <div className="row">
+                <div className="col-sm-4">
+                  <form>
+                    <div className="form-group">
+                      <label>Language</label>
+                      <Select
+                        name="language"
+                        value={language}
+                        onChange={this.setStateFromInput('language')}
+                        options={objectToOptions(languages)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Keybinding</label>
+                      <Select
+                        name="keyboardHandler"
+                        value={keyboardHandler}
+                        onChange={this.setStateFromInput('keyboardHandler')}
+                        options={objectToOptions(keyboardHandlers)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Theme</label>
+                      <Select
+                        name="theme"
+                        value={theme}
+                        onChange={this.setStateFromInput('theme')}
+                        options={objectToOptions(themes)}
+                      />
+                    </div>
+                    <div className="form-check">
+                      <input
+                        id="enableLiveAutocompletion"
+                        name="enableLiveAutocompletion"
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={enableLiveAutocompletion}
+                        onChange={e => this.setState({
+                          enableLiveAutocompletion: e.target.checked,
+                        })}
+                      />
+                      <label className="form-check-label" htmlFor="enableLiveAutocompletion">
+                        Enable live autocompletion
+                      </label>
+                    </div>
+                  </form>
+                </div>
+                <div className="col-sm-8">
+                  <AceEditor
+                    enableLiveAutocompletion={enableLiveAutocompletion}
+                    keyboardHandler={keyboardHandler}
+                    mode={language}
+                    theme={theme}
+                    width="100%"
+                  />
+                </div>
               </div>
-              <div className="col-sm-8">
-                <AceEditor
-                  enableLiveAutocompletion={enableLiveAutocompletion}
-                  keyboardHandler={keyboardHandler}
-                  mode={language}
-                  theme={theme}
-                  width="100%"
-                />
-              </div>
-            </div>
-          </TabPanel>
-        </Tabs>
-      </div>
+            </TabPanel>
+          </Tabs>
+        </div>
+      </HotKeys>
     );
   }
 }

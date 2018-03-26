@@ -10,6 +10,7 @@
     "react": "^16.2.0",
     "react-ace": "^5.9.0",
     "react-dom": "^16.2.0",
+    "react-hotkeys": "^1.0.3",
     "react-scripts": "1.1.1",
     "react-select": "^1.2.1",
     "react-table": "^6.8.0",
