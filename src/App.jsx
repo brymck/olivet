@@ -1,5 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
-import './App.css';
 
 // Ace
 import AceEditor from 'react-ace';
@@ -25,54 +25,37 @@ import 'react-tabs/style/react-tabs.css';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
+import './App.css';
+
 const languages = {
-  'JavaScript': 'javascript',
-  'Python': 'python',
+  JavaScript: 'javascript',
+  Python: 'python',
 };
 
 const keyboardHandlers = {
   '(none)': null,
-  'Emacs': 'emacs',
-  'Vim': 'vim',
-}
+  Emacs: 'emacs',
+  Vim: 'vim',
+};
 
 const themes = {
-  'GitHub': 'github',
-  'Monokai': 'monokai',
+  GitHub: 'github',
+  Monokai: 'monokai',
   'Solarized Dark': 'solarized_dark',
   'Solarized Light': 'solarized_light',
-}
+};
 
 const defaultLanguage = 'python';
 const defaultKeyboardHandler = null;
 const defaultTheme = 'github';
 
-const objectToOptions = (obj) => {
-  return Object.keys(obj).sort().map(k => ({
-    label: k,
-    value: obj[k],
-  }));
-};
+const objectToOptions = obj => Object.keys(obj).sort().map(k => ({
+  label: k,
+  value: obj[k],
+}));
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [{ name: 'bryan' }],
-      enableLiveAutocompletion: false,
-      keyboardHandler: defaultKeyboardHandler,
-      language: defaultLanguage,
-      theme: defaultTheme,
-    }
-  }
-
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ data: res }))
-      .catch(err => console.log(err));
-  }
-
-  async callApi() {
+  static async callApi() {
     const response = await fetch('/sources/gdp_per_capita');
     const body = await response.json();
 
@@ -81,8 +64,25 @@ class App extends Component {
     return body;
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [{ name: 'bryan' }],
+      enableLiveAutocompletion: false,
+      keyboardHandler: defaultKeyboardHandler,
+      language: defaultLanguage,
+      theme: defaultTheme,
+    };
+  }
+
+  componentDidMount() {
+    this.constructor.callApi()
+      .then(res => this.setState({ data: res }))
+      .catch(err => console.log(err)); // eslint-disable-line no-console
+  }
+
   setStateFromInput(label) {
-    return (input) => this.setState({ [label]: input.value });
+    return input => this.setState({ [label]: input.value });
   }
 
   render() {
